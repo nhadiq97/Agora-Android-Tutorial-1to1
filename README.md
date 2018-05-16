@@ -36,7 +36,7 @@ The SDK must be integrated into the sample project before it can opened and buil
 1. Clone this repository.
 2. Open **app/build.gradle** and add the following line to the `dependencies` list:
 
-```json
+```
 ...
 dependencies {
     ...
