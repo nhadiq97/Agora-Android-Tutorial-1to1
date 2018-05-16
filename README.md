@@ -115,7 +115,7 @@ The following icon assets for the user interface were added to the */res/drawabl
 |`btn_switch_camera.png`|An image of a camera and rotational arrows to switch between the two cameras.|
 |`btn_video.png`|An image of a camera to start video.|
 |`btn_voice.png`|An image of an arrow indicating that audio chat is enabled.|
-|`ic_launcher.png`|A desktop icon that users invoke the sample application with.|
+|`ic_launcher.png`|A desktop icon for users to invoke the sample application.|
 
 
 ### Design the User Interface
@@ -126,11 +126,11 @@ The main aspects of this layout are shown here:
 
 |Component                        |Description                                                                                                                                 |
 |---------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|
-|`activity_video_chat_view`       |A view that handles the main video feed. This view contains other views (described next).|
-|`remote_video_view_container`    |A view showing the remote, incoming video feed (i.e the video that the user will see).|
+|`activity_video_chat_view`       |A view that handles the main video feed. This view contains other views.|
+|`remote_video_view_container`    |A view displaying the remote, incoming video feed (for example, the video the user will see).|
 |`local_video_view_container`     |A smaller view at the top right corner showing the local video feed.|
-|`quick_tips_when_use_agora_sdk`  |Contains quick tip information.|
-|`LinearLayout (unamed)`          |A layout that encapsulates four buttons: Audio chat, Audio Mute, Switch Camera, and Hang Up. Each button uses the art assets described above.|
+|`quick_tips_when_use_agora_sdk`  |Displays quick tip information.|
+|`LinearLayout (unamed)`          |A layout that encapsulates four buttons: **Pause Video**, **Audio Mute**, **Switch Camera**, and **Hang Up**. Each button uses the assets described above.|
 
 ## Configure Resources
 To configure 1-to-1 communication resources:
@@ -141,7 +141,7 @@ To configure 1-to-1 communication resources:
  * [Set up Video Chat View Activity](#set-up-video-chat-view-activity)
  
 ### Create an Agora Instance
-The code samples in this section are from *ViewChatViewActivity.java*.
+The code samples in this section are in *ViewChatViewActivity.java*.
 
 The following imports define the interface of the Agora API that provides communication functionality: 
  - `io.agora.rtc.Constants`
@@ -149,7 +149,7 @@ The following imports define the interface of the Agora API that provides commun
  - `io.agora.rtc.RtcEngine`
  - `io.agora.rtc.video.VideoCanvas`
 
-Create a singleton by invoking [RtcEngine.create()](https://docs.agora.io/en/2.2/product/Interactive%20Gaming/API%20Reference/game_android?platform=Android) during initialization, passing the application ID stored in *strings.xml* and a reference to the activity's event handler. The Agora API uses events to inform the application about Agora engine runtime events (e.g. joining/leaving a channel, the addition of new participants, and so on). 
+Create a singleton by invoking [RtcEngine.create()](https://docs.agora.io/en/2.2/product/Interactive%20Gaming/API%20Reference/game_android?platform=Android) during initialization, passing the application ID stored in *strings.xml* and a reference to the activity's event handler. The Agora API uses events to inform the application about Agora engine runtime events, such as joining or leaving a channel and adding new participants. 
 
 ```java
 import io.agora.rtc.Constants;
@@ -170,7 +170,7 @@ private void initializeAgoraEngine() {
 }
 ```
 
-In the sample project, a helper method called `initializeAgoraEngine()` contains logic to create the singleton and is invoked by another helper method called `initAgoraEngineAndJoinChannel()`:
+In the sample project, a helper method called `initializeAgoraEngine()` creates the singleton and is invoked by another helper method called `initAgoraEngineAndJoinChannel()`:
 
 ```java
 private void initAgoraEngineAndJoinChannel() {
@@ -216,7 +216,7 @@ In the sample, a helper method called `setupVideoProfile()` contains this logic 
 
 Note: If a device's camera does not support the specified resolution, the SDK automatically chooses a suitable camera resolution. However, the encoder resolution still uses the profile specified by `setVideoProfile()`. 
 
-Since this configuration takes place before entering a channel, the end user will start in video mode rather than audio mode. If video mode were to be enabled during a call, the app will switch from audio to video mode. 
+Since this configuration takes place before entering a channel, the end user will start in video mode rather than audio mode. If video mode is enabled during a call, the app will switch from audio to video mode. 
 
 ### Set up Local Video
 The logic for the local video feed is contained within a helper method called `setupLocalVideo()` that is invoked by `initAgoraEngineAndJoinChannel()`:
@@ -253,11 +253,11 @@ private void joinChannel() {
 }
 ```
 
-The `channelName` parameter takes in the name of the channel to join which has been hard-coded to `demoChannel1`. The call to [RtcEngine.joinChannel()](https://docs.agora.io/en/2.2/product/Video/API%20Reference/communication_android_video?platform=Android) enables the speakerphone when using Agora.
+The `channelName` parameter receives the name of the channel to join (`demoChannel1`). The call to [RtcEngine.joinChannel()](https://docs.agora.io/en/2.2/product/Video/API%20Reference/communication_android_video?platform=Android) enables the speakerphone when using Agora.
 
-**Note**: users in the same channel can talk to each other, however users with different app IDs cannot call each other (even if they join the same channel).
+**Note**: Users in the same channel can talk to each other, but users with different app IDs cannot call each other even if they join the same channel.
 
-In the sample, the helper method `joinChannel()` is invoked by `initAgoraEngineAndJoinChannel()`:
+In this code sample, the helper method `joinChannel()` is invoked by `initAgoraEngineAndJoinChannel()`:
 
 ```java
 private void initAgoraEngineAndJoinChannel() {
@@ -305,7 +305,7 @@ private final IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandl
 };
 ```
 
-The `onFirstRemoteVideoDecoded()` method is invoked once connected with another user and the first remote video frame is received and decoded. This method invokes a helper method called `setupRemoteVideo()`:
+The `onFirstRemoteVideoDecoded()` method is invoked once another user is connected and the first remote video frame is received and decoded. This method invokes a helper method called `setupRemoteVideo()`:
 
 ```java
 private void setupRemoteVideo(int uid) {
@@ -326,7 +326,7 @@ private void setupRemoteVideo(int uid) {
 ```
 
 `setupRemoteVideo()` performs the following:
-* Obtains a reference to the remote video view in the layout.
+* Gets a reference to the remote video view in the layout.
 * Creates and adds a `View` object to the layout.
 * Creates a `VideoCanvas` and associates the view with it.
 * Tags the View with the channel ID.
@@ -364,7 +364,7 @@ private void onRemoteUserVideoMuted(int uid, boolean muted) {
 ```
 
 `onRemoteUserVideoMuted` performs the following:
-* Obtains a reference to the remote video view in the layout and the associated View.
+* Gets a reference to the remote video view in the layout and the associated View.
 * Checks that the channel ID associated with View's tag matches the channel ID passed in from Agora.
 * Toggles the visibility of the remote video view.
 
@@ -443,7 +443,7 @@ public void onLocalAudioMuteClicked(View view) {
 }
 ```
 
-The `btn_mute` button that mutes audio, has been configured in *activity_video_chat_view.xml* to invoke `onLocalAudioMuteClicked()` in response to the `onClick()` event:
+The `btn_mute` button that mutes audio has been configured in *activity_video_chat_view.xml* to invoke `onLocalAudioMuteClicked()` in response to the `onClick()` event:
 
 ```xml
 <ImageView
@@ -456,14 +456,14 @@ The `btn_mute` button that mutes audio, has been configured in *activity_video_c
 ```
 
 
-`onLocalAudioMuteClicked()` performs the following
-* Obtains a reference to the View containing the mute audio button.
+`onLocalAudioMuteClicked()` performs the following:
+* Gets a reference to the View containing the mute audio button.
 * Determines if the state of the button is *selected* or not.
 * Toggles the View's *selected* state.
 * Clears the View's button color when deselecting it and sets the button color to red when selecting it.
 * Invokes `RtcEngine.muteLocalAudioStream()` to toggle audio based on the *selected* state.
 
-To allow the user to mute local video (i.e. to prevent video of the current user from being broadcast to other users), the activity defines a method called `onLocalVideoMuteClicked()`:
+To allow the user to mute local video (for example, to prevent video of the current user from being broadcast to other users), the activity defines a method called `onLocalVideoMuteClicked()`:
 
 ```java
 public void onLocalVideoMuteClicked(View view) {
