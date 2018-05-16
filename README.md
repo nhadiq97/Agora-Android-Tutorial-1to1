@@ -29,7 +29,7 @@ In order to build and run the sample application you must obtain an App ID:
 ```
 
 ### Integrate the Agora Video SDK into the sample project
-The SDK must be integrated into the sample project before it can opened and built. There are two methods for integrating the Agora Video SDK into the sample project. The first method uses JCenter to automatically integrate the SDK files. The second methods requires you to manually copy the SDK files to the project.
+The SDK must be integrated into the sample project before it can opened and built. There are two methods for integrating the Agora Video SDK into the sample project. The first method uses JCenter to automatically integrate the SDK files. The second method requires you to manually copy the SDK files to the project.
 
 #### Method 1 - Integrate the SDK Automatically Using JCenter (Recommended)
 
@@ -111,10 +111,10 @@ The following icon assets for the user interface were added to the */res/drawabl
 |Asset                   |Description                                                                                        |
 |------------------------|---------------------------------------------------------------------------------------------------|
 |`btn_end_call.png`|An image of a red telephone for a *hang up* button.|
-|`btn_mute.png`|A picture of a microphone to mute audio.|
-|`btn_switch_camera.png`|A picture of a camera and rotational arrows to switch between the two cameras.|
-|`btn_video.png`|A picture of a camera to start video.|
-|`btn_voice.png`|A picture of an arrow indicating that audio chat is enabled.|
+|`btn_mute.png`|An image of a microphone to mute audio.|
+|`btn_switch_camera.png`|An image of a camera and rotational arrows to switch between the two cameras.|
+|`btn_video.png`|An image of a camera to start video.|
+|`btn_voice.png`|An image of an arrow indicating that audio chat is enabled.|
 |`ic_launcher.png`|A desktop icon that users invoke the sample application with.|
 
 
@@ -126,8 +126,8 @@ The main aspects of this layout are shown here:
 
 |Component                        |Description                                                                                                                                 |
 |---------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|
-|`activity_video_chat_view`       |A view which handles the main video feed. This view contains other views (described next).|
-|`remove_video_view_container`    |A view showing the remote, incoming video feed (i.e the video that the user will see).|
+|`activity_video_chat_view`       |A view that handles the main video feed. This view contains other views (described next).|
+|`remote_video_view_container`    |A view showing the remote, incoming video feed (i.e the video that the user will see).|
 |`local_video_view_container`     |A smaller view at the top right corner showing the local video feed.|
 |`quick_tips_when_use_agora_sdk`  |Contains quick tip information.|
 |`LinearLayout (unamed)`          |A layout that encapsulates four buttons: Audio chat, Audio Mute, Switch Camera, and Hang Up. Each button uses the art assets described above.|
@@ -143,7 +143,13 @@ To configure 1-to-1 communication resources:
 ### Create an Agora Instance
 The code samples in this section are from *ViewChatViewActivity.java*.
 
-The imports: `io.agora.rtc.Constants`, `io.agora.rtc.IRtcEngineEventHandler`, `io.agora.rtc.RtcEngine`, and `io.agora.rtc.video.VideoCanvas' define the interface of the Agora API that provides communication functionality. Once imported, a singleton can be created by invoking [RtcEngine.create()](https://docs.agora.io/en/2.2/product/Interactive%20Gaming/API%20Reference/game_android?platform=Android) during initialization, passing the application ID stored in *strings.xml* and a reference to the activity's event handler. The Agora API uses events to inform the application about Agora engine runtime events (e.g. joining/leaving a channel, the addition of new participants, etc). 
+The following imports define the interface of the Agora API that provides communication functionality: 
+ - `io.agora.rtc.Constants`
+ - `io.agora.rtc.IRtcEngineEventHandler`
+ - `io.agora.rtc.RtcEngine`
+ - `io.agora.rtc.video.VideoCanvas'.
+
+Create a singleton by invoking [RtcEngine.create()](https://docs.agora.io/en/2.2/product/Interactive%20Gaming/API%20Reference/game_android?platform=Android) during initialization, passing the application ID stored in *strings.xml* and a reference to the activity's event handler. The Agora API uses events to inform the application about Agora engine runtime events (e.g. joining/leaving a channel, the addition of new participants, and so on). 
 
 ```java
 import io.agora.rtc.Constants;
