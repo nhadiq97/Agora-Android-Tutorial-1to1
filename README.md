@@ -7,11 +7,11 @@ This tutorial enables you to quickly get started in your development efforts to 
 * Enable or disable video.
 * Choose between the front or rear camera.
 
-A full-fledged demo can be found [here](https://github.com/AgoraIO/OpenVideoCall-Android).
+A more complete demonstration app can be found [here](https://github.com/AgoraIO/OpenVideoCall-Android).
 
 ## Prerequisites
 
-* Android Studio 2.0 or above
+* Android Studio 2.0 or above.
 * Android device (e.g. Nexus 5X). A real device is recommended because some simulators have missing functionality or lack the performance necessary to run the sample.
 
 ## Quick Start
@@ -22,7 +22,7 @@ In order to build and run the sample application you must obtain an App ID:
 
 1. Create a developer account at [agora.io](https://dashboard.agora.io/signin/). Once you finish the signup process, you will be redirected to the Dashboard.
 2. Navigate in the Dashboard tree on the left to **Projects** > **Project List**.
-3. Locate the file **app/src/main/res/values/strings.xml** and replace <#YOUR APP ID#> with the App ID that you obtained from the Dashboard.
+3. Locate the file **app/src/main/res/values/strings.xml** and replace <#YOUR APP ID#> with the App ID in the dashboard.
 
 ```xml
 <string name="agora_app_id"><#YOUR APP ID#></string>
@@ -106,7 +106,7 @@ In the `AndroidManifest.xml` file, `uses-permissions` settings were added for th
 ```
 
 ### Create Visual Assets
-The following icon assets for the user interface were added to the */res/drawable* folder:
+Add the following icon assets for the user interface to the */res/drawable* folder:
 
 |Asset                   |Description                                                                                        |
 |------------------------|---------------------------------------------------------------------------------------------------|
