@@ -40,7 +40,7 @@ The SDK must be integrated into the sample project before it can opened and buil
 ...
 dependencies {
     ...
-    compile 'io.agora.rtc:full-sdk:2.1.0' <- add this line
+    compile 'io.agora.rtc:full-sdk:2.1.0' 
 }
 ```
 
