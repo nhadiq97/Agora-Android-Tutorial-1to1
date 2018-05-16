@@ -147,7 +147,7 @@ The following imports define the interface of the Agora API that provides commun
  - `io.agora.rtc.Constants`
  - `io.agora.rtc.IRtcEngineEventHandler`
  - `io.agora.rtc.RtcEngine`
- - `io.agora.rtc.video.VideoCanvas'.
+ - `io.agora.rtc.video.VideoCanvas`
 
 Create a singleton by invoking [RtcEngine.create()](https://docs.agora.io/en/2.2/product/Interactive%20Gaming/API%20Reference/game_android?platform=Android) during initialization, passing the application ID stored in *strings.xml* and a reference to the activity's event handler. The Agora API uses events to inform the application about Agora engine runtime events (e.g. joining/leaving a channel, the addition of new participants, and so on). 
 
@@ -174,7 +174,7 @@ In the sample project, a helper method called `initializeAgoraEngine()` contains
 
 ```java
 private void initAgoraEngineAndJoinChannel() {
-    initializeAgoraEngine();     // Tutorial Step 1
+    initializeAgoraEngine();     
     ...
 }
 ```
@@ -203,8 +203,8 @@ private void setupVideoProfile() {
 }
 
 private void initAgoraEngineAndJoinChannel() {
-    initializeAgoraEngine();     // Tutorial Step 1
-    setupVideoProfile();         // Tutorial Step 2
+    initializeAgoraEngine();     
+    setupVideoProfile();        
     ...
 }
 ```
@@ -226,9 +226,9 @@ private void setupLocalVideo() {
 }
 
 private void initAgoraEngineAndJoinChannel() {
-    initializeAgoraEngine();     // Tutorial Step 1
-    setupVideoProfile();         // Tutorial Step 2
-    setupLocalVideo();           // Tutorial Step 3
+    initializeAgoraEngine();     
+    setupVideoProfile();         
+    setupLocalVideo();           
     ...
 }
 ```
@@ -244,7 +244,7 @@ A helper method called `joinChannel()` invokes `RtcEngine.joinChannel()` enables
 
 ```java
 private void joinChannel() {
-    mRtcEngine.joinChannel(null, "demoChannel1", "Extra Optional Data", 0); // if you do not specify the uid, we will generate the uid for you
+    mRtcEngine.joinChannel(null, "demoChannel1", "Extra Optional Data", 0); 
 }
 ```
 
@@ -256,10 +256,10 @@ In the sample, the helper method `joinChannel()` is invoked by `initAgoraEngineA
 
 ```java
 private void initAgoraEngineAndJoinChannel() {
-    initializeAgoraEngine();     // Tutorial Step 1
-    setupVideoProfile();         // Tutorial Step 2
-    setupLocalVideo();           // Tutorial Step 3
-    joinChannel();               // Tutorial Step 4
+    initializeAgoraEngine();     
+    setupVideoProfile();         
+    setupLocalVideo();           
+    joinChannel();               
 }
 ```
 
@@ -267,9 +267,9 @@ private void initAgoraEngineAndJoinChannel() {
 The `VideoChatViewActivity` class contains an `IRtcEngineEventHandler` to handle various video session events:
 
 ```java
-private final IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandler() { // Tutorial Step 1
+private final IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandler() { 
     @Override
-    public void onFirstRemoteVideoDecoded(final int uid, int width, int height, int elapsed) { // Tutorial Step 5
+    public void onFirstRemoteVideoDecoded(final int uid, int width, int height, int elapsed) { 5
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -279,7 +279,7 @@ private final IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandl
     }
 
     @Override
-    public void onUserOffline(int uid, int reason) { // Tutorial Step 7
+    public void onUserOffline(int uid, int reason) { 
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -289,7 +289,7 @@ private final IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandl
     }
 
     @Override
-    public void onUserMuteVideo(final int uid, final boolean muted) { // Tutorial Step 10
+    public void onUserMuteVideo(final int uid, final boolean muted) { 
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
