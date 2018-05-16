@@ -209,7 +209,12 @@ private void initAgoraEngineAndJoinChannel() {
 }
 ```
 
-In the sample, a helper method called `setupVideoProfile()` contains this logic and is invoked by `initAgoraEngineAndJoinChannel()` during the activity's creation. It starts by enabling video with [enableVideo](https://docs.agora.io/en/2.2/product/Video/API%20Reference/communication_android_video?platform=Android). The video encoding profile is then set to 360p and the `swapWidthAndHeight` parameter is set to false via [setVideoProfile](https://docs.agora.io/en/2.2/product/Video/API%20Reference/communication_android_video?platform=Android). Each profile includes a set of parameters such as: resolution, frame rate, bitrate, etc. If a device's camera does not support the specified resolution, the SDK automatically chooses a suitable camera resolution. However, the encoder resolution still uses the profile specified by `setVideoProfile()`. 
+In the sample, a helper method called `setupVideoProfile()` contains this logic and is invoked by `initAgoraEngineAndJoinChannel()` during the activity's creation:
+
+- It starts by enabling video with [enableVideo](https://docs.agora.io/en/2.2/product/Video/API%20Reference/communication_android_video?platform=Android). 
+- The video encoding profile is then set to 360p and the `swapWidthAndHeight` parameter is set to `false` via [setVideoProfile](https://docs.agora.io/en/2.2/product/Video/API%20Reference/communication_android_video?platform=Android). Each profile includes a set of parameters such as resolution, frame rate, bitrate, etc. 
+
+Note: If a device's camera does not support the specified resolution, the SDK automatically chooses a suitable camera resolution. However, the encoder resolution still uses the profile specified by `setVideoProfile()`. 
 
 Since this configuration takes place before entering a channel, the end user will start in video mode rather than audio mode. If video mode were to be enabled during a call, the app will switch from audio to video mode. 
 
