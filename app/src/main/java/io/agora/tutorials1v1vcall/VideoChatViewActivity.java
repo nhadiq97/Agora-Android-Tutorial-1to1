@@ -15,19 +15,22 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import io.agora.rtc.Constants;
 import io.agora.rtc.IRtcEngineEventHandler;
 import io.agora.rtc.RtcEngine;
 import io.agora.rtc.video.VideoCanvas;
+
+import io.agora.rtc.video.VideoEncoderConfiguration; // 2.3.0 and later
 
 public class VideoChatViewActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = VideoChatViewActivity.class.getSimpleName();
 
-    private static final int PERMISSION_REQ_ID_RECORD_AUDIO = 22;
-    private static final int PERMISSION_REQ_ID_CAMERA = PERMISSION_REQ_ID_RECORD_AUDIO + 1;
+    private static final int PERMISSION_REQ_ID = 22;
 
-    private RtcEngine mRtcEngine;// Tutorial Step 1
+    // permission WRITE_EXTERNAL_STORAGE is not mandatory for Agora RTC SDK, just incase if you wanna save logs to external sdcard
+    private static final String[] REQUESTED_PERMISSIONS = {Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
+    private RtcEngine mRtcEngine; // Tutorial Step 1
     private final IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandler() { // Tutorial Step 1
         @Override
         public void onFirstRemoteVideoDecoded(final int uid, int width, int height, int elapsed) { // Tutorial Step 5
@@ -65,7 +68,9 @@ public class VideoChatViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_chat_view);
 
-        if (checkSelfPermission(Manifest.permission.RECORD_AUDIO, PERMISSION_REQ_ID_RECORD_AUDIO) && checkSelfPermission(Manifest.permission.CAMERA, PERMISSION_REQ_ID_CAMERA)) {
+        if (checkSelfPermission(REQUESTED_PERMISSIONS[0], PERMISSION_REQ_ID) &&
+                checkSelfPermission(REQUESTED_PERMISSIONS[1], PERMISSION_REQ_ID) &&
+                checkSelfPermission(REQUESTED_PERMISSIONS[2], PERMISSION_REQ_ID)) {
             initAgoraEngineAndJoinChannel();
         }
     }
@@ -84,7 +89,7 @@ public class VideoChatViewActivity extends AppCompatActivity {
                 != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(this,
-                    new String[]{permission},
+                    REQUESTED_PERMISSIONS,
                     requestCode);
             return false;
         }
@@ -97,24 +102,14 @@ public class VideoChatViewActivity extends AppCompatActivity {
         Log.i(LOG_TAG, "onRequestPermissionsResult " + grantResults[0] + " " + requestCode);
 
         switch (requestCode) {
-            case PERMISSION_REQ_ID_RECORD_AUDIO: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    checkSelfPermission(Manifest.permission.CAMERA, PERMISSION_REQ_ID_CAMERA);
-                } else {
-                    showLongToast("No permission for " + Manifest.permission.RECORD_AUDIO);
+            case PERMISSION_REQ_ID: {
+                if (grantResults[0] != PackageManager.PERMISSION_GRANTED || grantResults[1] != PackageManager.PERMISSION_GRANTED || grantResults[2] != PackageManager.PERMISSION_GRANTED) {
+                    showLongToast("Need permissions " + Manifest.permission.RECORD_AUDIO + "/" + Manifest.permission.CAMERA + "/" + Manifest.permission.WRITE_EXTERNAL_STORAGE);
                     finish();
+                    break;
                 }
-                break;
-            }
-            case PERMISSION_REQ_ID_CAMERA: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    initAgoraEngineAndJoinChannel();
-                } else {
-                    showLongToast("No permission for " + Manifest.permission.CAMERA);
-                    finish();
-                }
+
+                initAgoraEngineAndJoinChannel();
                 break;
             }
         }
@@ -195,7 +190,11 @@ public class VideoChatViewActivity extends AppCompatActivity {
     // Tutorial Step 2
     private void setupVideoProfile() {
         mRtcEngine.enableVideo();
-        mRtcEngine.setVideoProfile(Constants.VIDEO_PROFILE_360P, false);
+
+//      mRtcEngine.setVideoProfile(Constants.VIDEO_PROFILE_360P, false); // Earlier than 2.3.0
+        mRtcEngine.setVideoEncoderConfiguration(new VideoEncoderConfiguration(VideoEncoderConfiguration.VD_640x360, VideoEncoderConfiguration.FRAME_RATE.FRAME_RATE_FPS_15,
+                VideoEncoderConfiguration.STANDARD_BITRATE,
+                VideoEncoderConfiguration.ORIENTATION_MODE.ORIENTATION_MODE_FIXED_PORTRAIT));
     }
 
     // Tutorial Step 3
@@ -204,7 +203,7 @@ public class VideoChatViewActivity extends AppCompatActivity {
         SurfaceView surfaceView = RtcEngine.CreateRendererView(getBaseContext());
         surfaceView.setZOrderMediaOverlay(true);
         container.addView(surfaceView);
-        mRtcEngine.setupLocalVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_ADAPTIVE, 0));
+        mRtcEngine.setupLocalVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, 0));
     }
 
     // Tutorial Step 4
@@ -222,7 +221,7 @@ public class VideoChatViewActivity extends AppCompatActivity {
 
         SurfaceView surfaceView = RtcEngine.CreateRendererView(getBaseContext());
         container.addView(surfaceView);
-        mRtcEngine.setupRemoteVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_ADAPTIVE, uid));
+        mRtcEngine.setupRemoteVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, uid));
 
         surfaceView.setTag(uid); // for mark purpose
         View tipMsg = findViewById(R.id.quick_tips_when_use_agora_sdk); // optional UI
